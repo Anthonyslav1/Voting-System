@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-
 // Authorization middleware
 const authorizeUser = (req, res, next) => {
   const token = req.query.Authorization?.split('Bearer ')[1];
@@ -26,54 +25,22 @@ const authorizeUser = (req, res, next) => {
   }
 };
 
+// Serve static assets from the 'src' folder
+app.use(express.static(path.join(__dirname, 'src')));
 
+// Serve the login page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'src/html/login.html'));
 });
 
-app.get('/js/login.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/js/login.js'))
-});
-
-app.get('/css/login.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/css/login.css'))
-});
-
-app.get('/css/index.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/css/index.css'))
-});
-
-app.get('/css/admin.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/css/admin.css'))
-});
-
-app.get('/assets/eth5.jpg', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/assets/eth5.jpg'))
-});
-
-app.get('/js/app.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/js/app.js'))
-});
-
+// Serve the admin page (only if authorized)
 app.get('/admin.html', authorizeUser, (req, res) => {
   res.sendFile(path.join(__dirname, 'src/html/admin.html'));
 });
 
+// Serve the index page (only if authorized)
 app.get('/index.html', authorizeUser, (req, res) => {
   res.sendFile(path.join(__dirname, 'src/html/index.html'));
-});
-
-app.get('/dist/login.bundle.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/dist/login.bundle.js'));
-});
-
-app.get('/dist/app.bundle.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/dist/app.bundle.js'));
-});
-
-// Serve the favicon.ico file
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/favicon.ico'));
 });
 
 // Start the server
