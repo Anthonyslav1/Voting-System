@@ -62,11 +62,13 @@ window.App = {
       });
 
       instance.checkVote().then(function (voted) {
-          console.log(voted);
-          if(!voted)  {
-            $("#voteButton").attr("disabled", false);
-
-          }
+        console.log(voted);
+        if (voted) {
+          // Show popup notification if the user has voted
+          alert("You have already voted. Thank you for participating!");
+        } else {
+          $("#voteButton").attr("disabled", false);
+        }
       });
 
     }).catch(function(err){ 
